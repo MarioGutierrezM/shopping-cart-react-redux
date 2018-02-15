@@ -1,0 +1,133 @@
+.Content {
+  margin: 0 auto;
+  width: 90%;
+}
+
+/*  custom the home page */
+.blackContent{
+  background-color: #080808c9;
+  border: 4px solid black;
+  border-radius: .50rem;
+}
+
+/* custom products page */
+.btnAndCount{
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.border-green{
+  border: 1px solid #28a745;
+}
+
+.border-green:focus{
+  border: 1px solid #28a745;
+  background-color: #28a7464f;
+}
+
+/* sizes of images */
+.imgMed {
+  height: 350px;
+}
+
+.imgBig {
+  height: 500px;
+}
+
+.imgBan {
+  height: 700px;
+}
+
+.imgSmall {
+  height: 100px;
+}
+
+.imgSmall2 {
+  height: 145px;
+}
+
+.imgMedWidth {
+  width: 240px;
+}
+/* center something at product card */
+.posCent {
+  padding-top: 100px;
+  padding-right: 160px;
+  padding-bottom: 50px;
+  padding-left: 50px;
+}
+
+
+/* custom the modal style */
+.modal-color-success {
+  background-color: #d4edda;
+}
+
+.input-green {
+  border-color: #d4edda;
+}
+.input-green:focus{
+   background-color: #d4edda;
+   border-color: #d4edda;
+}
+
+/* custom the delete modal style */
+.listSmall {
+  text-align: center;
+}
+.listCenter {
+  padding-top: 35px;
+}
+.listLeft {
+  text-align: left;
+}
+
+.modal-color-danger {
+  background-color: #f8d7da;
+}
+
+/* custom form to modify a product */
+.card-color-warning {
+  background-color: #fff3cd;
+}
+.input-yellow{
+  border-color: #ffeeba;
+}
+.input-yellow:focus{
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+.imgCenter {
+  text-align: center;
+}
+
+/*  custom update bottom at administration page */
+.darkYellow {
+  color: rgb(122, 92, 15);
+}
+.darkYellow:hover {
+  color: black;
+  text-decoration: none;
+}
+
+/* custom of the details botton at prodcuts page */
+.withoutLink:hover  {
+  text-decoration: none;
+}
+
+/* custom of the list product at shopping cart page */
+.join-list{
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.li-quantity{
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.data-Center {
+  text-align: center;
+}
