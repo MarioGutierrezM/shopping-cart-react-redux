@@ -17,7 +17,7 @@ const cartReducer = (state = {
         case "DELETE_ONE_PRODUCT_FULFILLED":
             state = {
                 ...state,
-                cart: [...state.cart.filter(item => item.product !== action.payload)]
+                cart: state.cart.filter(item => item.product !== action.payload)
             }
             break;
         default:

@@ -51,32 +51,32 @@ class ShoppingCart extends Component {
             products: this.props.cartReducer.cart,
             client_id: this.state.clientId
         };
-        let url = 'http://localhost:3000/api/order/';
-        OrderController.postOrder(url, order, res => {
-            if (res.body == null) {
-                swal({
-                    title: "OPS!",
-                    text: "Some product is Out of Stock, you need to make your order again!",
-                    icon: "warning",
-                });
-                this.props.deleteAllProducts();
-                this.setState({
-                    data: [],
-                    preOrder: []
-                });
-            } else {
-                swal({
-                    title: "Good job!",
-                    text: "Order has been done!",
-                    icon: "success",
-                });
-                this.props.deleteAllProducts();
-                this.setState({
-                    data: [],
-                    preOrder: []
-                });
-            }
-        });
+        // let url = 'http://localhost:3000/api/order/';
+        // OrderController.postOrder(url, order, res => {
+        //     if (res.body == null) {
+        //         swal({
+        //             title: "OPS!",
+        //             text: "Some product is Out of Stock, you need to make your order again!",
+        //             icon: "warning",
+        //         });
+        //         this.props.deleteAllProducts();
+        //         this.setState({
+        //             data: [],
+        //             preOrder: []
+        //         });
+        //     } else {
+        //         swal({
+        //             title: "Good job!",
+        //             text: "Order has been done!",
+        //             icon: "success",
+        //         });
+        //         this.props.deleteAllProducts();
+        //         this.setState({
+        //             data: [],
+        //             preOrder: []
+        //         });
+        //     }
+        // });
     }
 
     cancelOrder(e) {
@@ -89,7 +89,6 @@ class ShoppingCart extends Component {
 
     deleteProduct(e) {
         this.props.deleteOneProduct(e.target.value);
-
         setTimeout(() => {
             let prodTemp = [];
             let i = 0;
@@ -221,9 +220,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
 
 /* --------------------- PENDIENTE -------------------
 
--SI SE COMPRA EL MISMO PRODUCTO, JUNTARLO Y AUMENTAR LA CANTIDAD
+-SI SE COMPRA EL MISMO PRODUCTO, JUNTARLO Y AUMENTAR LA CANTIDAD 
 -poder modificar la cantidad desde el cart
 -limpiar todo lo no necesario
+
+-corregir al eliminar productos y clientes en pagina administracion 
 
 
 
@@ -242,4 +243,22 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
 
 -quitar lista de roots
 
+*/
+
+
+
+/*
+var array1 = [5, 12, 8, 130, 44, 1100];
+var element = 5;
+var found = array1.find(function(itera) {
+  return element === itera ;
+});
+
+//console.log(found);
+// expected output: 12
+if( found ){
+  console.log("le debo sumar 1")
+}else{
+  console.log("lo agrgo normal")
+}
 */
