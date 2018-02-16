@@ -9,6 +9,8 @@ import OrderController from "../../controllers/orderController";
 import { connect } from "react-redux";
 import { deleteAllProducts, deleteOneProduct } from "../../redux/actions/cartActions";
 
+//sweet alert
+import swal from 'sweetalert';
 
 class ShoppingCart extends Component {
     constructor(props) {
@@ -22,19 +24,16 @@ class ShoppingCart extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props);
-
         this.setState({
-            clientId: "5a74a5141a73970be1779944",
+            clientId: "5a83241a5c3f0506574698e5",
             //clientId: "5a80a1b56f68da0890fd4555",
-            preOrder: this.props.cartReducer.cart,  //guarda lo que llega en redux
-        })
-
+            preOrder: this.props.cartReducer.cart,  //guarda lo que llega en redux, solo lo uso para la cantidad y crear la orden
+        });
         //consulta para poder mostrar mas informacion de cada producto 
         let prodTemp = [];
         let i = 0;
         for (i in this.props.cartReducer.cart) {
-            console.log("i", i, this.props.cartReducer.cart[i]);
+            //console.log("i", i, this.props.cartReducer.cart[i]);
             let id = `${this.props.cartReducer.cart[i].product}`;
             let url = `http://localhost:3000/api/product/${id}`;
             ProductController.getProduct(url, res => {
@@ -42,39 +41,49 @@ class ShoppingCart extends Component {
                 console.log("data", prodTemp);
                 this.setState({
                     data: prodTemp
-                })
-            })
+                });
+            });
         }
     }
 
     newOrder(e) {
         let order = {
-            products: this.state.preOrder,
+            products: this.props.cartReducer.cart,
             client_id: this.state.clientId
-        }
+        };
         let url = 'http://localhost:3000/api/order/';
         OrderController.postOrder(url, order, res => {
             if (res.body == null) {
-                alert("Some product is Out of Stock");
+                swal({
+                    title: "OPS!",
+                    text: "Some product is Out of Stock, you need to make your order again!",
+                    icon: "warning",
+                });
+                this.props.deleteAllProducts();
+                this.setState({
+                    data: [],
+                    preOrder: []
+                });
             } else {
-                alert("Order has been done");
+                swal({
+                    title: "Good job!",
+                    text: "Order has been done!",
+                    icon: "success",
+                });
+                this.props.deleteAllProducts();
+                this.setState({
+                    data: [],
+                    preOrder: []
+                });
             }
-
         });
-        this.setState({ //limpia el estado una vez que se crea la orden 
-            preOrder: [],
-            data: []
-        })
-        localStorage.clear();
-        localStorage.removeItem("saveItems");
-        console.log("this.props.lista", this.props.lista);
     }
 
     cancelOrder(e) {
         this.props.deleteAllProducts();
         this.setState({
             data: [],
-            preOrder: this.props.cartReducer.cart,  
+            preOrder: this.props.cartReducer.cart,  //ya llega limpio
         })
     }
 
@@ -85,9 +94,8 @@ class ShoppingCart extends Component {
             let prodTemp = [];
             let i = 0;
             if (this.props.cartReducer.cart.length > 0) {
-            //console.log("with data", this.props.cartReducer.cart.length);
+                //console.log("with data", this.props.cartReducer.cart.length);
                 for (i in this.props.cartReducer.cart) {
-                    //console.log("i", i, this.props.cartReducer.cart[i]);
                     let id = `${this.props.cartReducer.cart[i].product}`;
                     let url = `http://localhost:3000/api/product/${id}`;
                     ProductController.getProduct(url, res => {
@@ -99,14 +107,13 @@ class ShoppingCart extends Component {
                         });
                     });
                 }
-            }else{
-            //console.log("without data", this.props.cartReducer.cart.length);
+            } else {
                 this.setState({
                     data: [],
                     preOrder: []
-                })
+                });
             }
-        }, 1000)
+        }, 1000);
     }
 
 
@@ -213,15 +220,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
 //export default ShoppingCart;
 
 /* --------------------- PENDIENTE -------------------
--armar la orden
+
 -SI SE COMPRA EL MISMO PRODUCTO, JUNTARLO Y AUMENTAR LA CANTIDAD
-- VALIDAR AL PEDIR MAS PRODUCTOS DEL STOCK, MOSTRAR MENSAJE
-
-- al dar click en confirmar orden, limpiar arreglo u objeto
-
+-poder modificar la cantidad desde el cart
 -limpiar todo lo no necesario
-
-
 
 
 
@@ -232,10 +234,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
 -MOSTRAR CANTIDAD DE PRODUCTOS
 -mandar 1 producto minimo
 
+
+-armar la orden
+- al dar click en confirmar orden, limpiar arreglo u objeto
+- VALIDAR AL PEDIR MAS PRODUCTOS DEL STOCK, MOSTRAR MENSAJE
+
+
 -quitar lista de roots
-
-
-
-
 
 */
