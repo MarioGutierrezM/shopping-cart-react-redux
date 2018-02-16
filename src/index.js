@@ -9,14 +9,19 @@ import AppRoutes from "./routes";
 //Assets
 import './index.css';
 
-//Other
+//redux
+import { Provider } from "react-redux";
+import store from "./redux/store";
+
 //import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 
 render(
-    <Router>
-        <AppRoutes />
-    </Router>,
+    <Provider store={store}>
+        <Router>
+            <AppRoutes />
+        </Router>
+    </Provider>,
     document.getElementById('root')
 );
 registerServiceWorker();

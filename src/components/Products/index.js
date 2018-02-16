@@ -2,7 +2,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import productController from "../../controllers/productController";
-import OrderController from "../../controllers/orderController";
+//import OrderController from "../../controllers/orderController";
+
+//To Redux
+import { connect } from "react-redux";
+import { addOneProduct } from "../../redux/actions/cartActions";
 
 
 class Products extends Component {
@@ -26,17 +30,23 @@ class Products extends Component {
         });
     }
 
-    addToCart(e){
-        console.log("added", e.target.value);
-        OrderController.addProduct(e.target.value, this.state.newOrder, this.state.quantity, res => {
-            this.setState({
-                newOrder: res
-            })
-        });
-        this.props.getPreOrder(this.state.newOrder);//mandamos a padre
+    addToCart(e) {
+        console.log("Id added", e.target.value);
+        if(this.state.quantity === 0){
+            this.props.addOneProduct({
+                product: e.target.value,
+                quantity: 1
+            });
+        }else{
+            this.props.addOneProduct({
+                product: e.target.value,
+                quantity: this.state.quantity
+            });
+        }
+        
     }
 
-    handleNumber(e){
+    handleNumber(e) {
         this.setState({
             quantity: Number(e.target.value)
         })
@@ -47,10 +57,10 @@ class Products extends Component {
             <div className="container">
                 <br />
                 <h1><i className="fas fa-tags"></i> Products</h1>
-                <hr/>
+                <hr />
 
                 <div className="card-columns">
-                    { this.state.data.map( (item, key) => {
+                    {this.state.data.map((item, key) => {
                         return (
                             <div className="card " key={key}>
                                 <img className="card-img-top imgMed" src={item.imageUrl} alt="Card img cap" />
@@ -68,11 +78,21 @@ class Products extends Component {
                                     </Link>
                                     <div className="row btnAndCount">
                                         <div className="col-md-3 btnAndCount">
-                                            <input className="form-control border-green" type="number" max="10" min="1" onChange={e => this.handleNumber(e)}/>
+                                            <input className="form-control border-green" 
+                                                type="number" 
+                                                max="10" 
+                                                min="1"
+                                                onChange={e => this.handleNumber(e)} 
+                                            />
                                         </div>
                                         <div className="col-md-9 btnAndCount">
-                                            <button type="button" onClick={e => this.addToCart(e)} value={item._id} className="btn btn-secondary btn-outline-success btn-block">
-                                                <i className="fas fa-cart-plus"></i> Add 
+                                            <button 
+                                                type="button" 
+                                                onClick={e => this.addToCart(e)} 
+                                                value={item._id} 
+                                                className="btn btn-secondary btn-outline-success btn-block"
+                                            >
+                                                <i className="fas fa-cart-plus"></i> Add
                                             </button>
                                         </div>
                                     </div>
@@ -86,4 +106,20 @@ class Products extends Component {
     }
 }
 
-export default Products;
+
+const mapStateToProps = (state) => {
+    return {
+        cartReducer: state.cartReducer
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addOneProduct: (obj) => {
+            dispatch(addOneProduct(obj));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products);
+//export default Products;

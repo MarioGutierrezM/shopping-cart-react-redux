@@ -41,9 +41,7 @@ const AppRoutes = () =>
             <Route exact path="/order/:id" component={Order} />
             <Route exact path="/admin/updateProduct/:id" component={UpdateProduct} />
             <Route exact path="/admin/updateClient/:id" component={UpdateClient} />
-            <Route exact path="/shoppingcart" component={ () => 
-                <ShoppingCart lista={prueba}/>
-            }/>
+            <Route exact path="/shoppingcart" component={ShoppingCart}/>
             <Route component={Page404} />
         </Switch>
     </App>;

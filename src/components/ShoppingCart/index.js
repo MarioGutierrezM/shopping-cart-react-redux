@@ -5,6 +5,11 @@ import { Link } from "react-router-dom";
 import ProductController from "../../controllers/productController";
 import OrderController from "../../controllers/orderController";
 
+//redux
+import { connect } from "react-redux";
+import { deleteAllProducts, deleteOneProduct } from "../../redux/actions/cartActions";
+
+
 class ShoppingCart extends Component {
     constructor(props) {
         super(props);
@@ -13,37 +18,24 @@ class ShoppingCart extends Component {
             clientId: "",
             preOrder: [],
             data: [], //para mostrar despues de la consulta individual con toda la info de los objetos
-            savePreOrder: [] //para salvar los productos cuando se desea seguir comprando
         }
     }
 
     componentDidMount() {
-
-        let save = localStorage.getItem("saveItems");
-        let saveData = JSON.parse(save);
-        console.log("info guardada", saveData);
-
-        if (save) {//si hay info guardada se junta con la que viene
-            console.log("hay datos salvados");
-            let x = 0;
-            for (x in saveData) {
-                this.props.lista.push(saveData[x])
-            }
-            console.log("ya con datos nuevos y salvados", this.props.lista);
-        }
+        console.log(this.props);
 
         this.setState({
             clientId: "5a74a5141a73970be1779944",
             //clientId: "5a80a1b56f68da0890fd4555",
-            preOrder: this.props.lista,  //guarda lo que llega de product page
+            preOrder: this.props.cartReducer.cart,  //guarda lo que llega en redux
         })
 
         //consulta para poder mostrar mas informacion de cada producto 
         let prodTemp = [];
         let i = 0;
-        for (i in this.props.lista) {
-            //console.log("i", i, this.props.lista[i].product);
-            let id = `${this.props.lista[i].product}`;
+        for (i in this.props.cartReducer.cart) {
+            console.log("i", i, this.props.cartReducer.cart[i]);
+            let id = `${this.props.cartReducer.cart[i].product}`;
             let url = `http://localhost:3000/api/product/${id}`;
             ProductController.getProduct(url, res => {
                 prodTemp.push(res.body);
@@ -61,13 +53,13 @@ class ShoppingCart extends Component {
             client_id: this.state.clientId
         }
         let url = 'http://localhost:3000/api/order/';
-        OrderController.postOrder(url, order, res=> {
-            if( res.body == null){
+        OrderController.postOrder(url, order, res => {
+            if (res.body == null) {
                 alert("Some product is Out of Stock");
-            }else{
+            } else {
                 alert("Order has been done");
             }
-            
+
         });
         this.setState({ //limpia el estado una vez que se crea la orden 
             preOrder: [],
@@ -78,19 +70,43 @@ class ShoppingCart extends Component {
         console.log("this.props.lista", this.props.lista);
     }
 
-    buyMore(e) {//regresa a productos, debe guardar los productos actuales
-        //guardar objeto como string
-        localStorage.setItem("saveItems", JSON.stringify(this.state.preOrder));
-        console.log("guardado");
+    cancelOrder(e) {
+        this.props.deleteAllProducts();
+        this.setState({
+            data: [],
+            preOrder: this.props.cartReducer.cart,  
+        })
     }
 
-    cancelOrder(e) {
-        this.setState({ //limpia el estado una vez que se crea la orden 
-            preOrder: [],
-            data: []
-        })
-        localStorage.clear();
-        localStorage.removeItem("saveItems");
+    deleteProduct(e) {
+        this.props.deleteOneProduct(e.target.value);
+
+        setTimeout(() => {
+            let prodTemp = [];
+            let i = 0;
+            if (this.props.cartReducer.cart.length > 0) {
+            //console.log("with data", this.props.cartReducer.cart.length);
+                for (i in this.props.cartReducer.cart) {
+                    //console.log("i", i, this.props.cartReducer.cart[i]);
+                    let id = `${this.props.cartReducer.cart[i].product}`;
+                    let url = `http://localhost:3000/api/product/${id}`;
+                    ProductController.getProduct(url, res => {
+                        prodTemp.push(res.body);
+                        console.log("data", prodTemp);
+                        this.setState({
+                            data: prodTemp,
+                            preOrder: this.props.cartReducer.cart
+                        });
+                    });
+                }
+            }else{
+            //console.log("without data", this.props.cartReducer.cart.length);
+                this.setState({
+                    data: [],
+                    preOrder: []
+                })
+            }
+        }, 1000)
     }
 
 
@@ -110,7 +126,9 @@ class ShoppingCart extends Component {
                                     <li className="list-group-item data-Center">
                                         <div className="row align-items-center">
                                             <div className="col-2">
-                                                <button className="btn btn-outline-danger"> Cancel </button>
+                                                <button className="btn btn-outline-danger" onClick={e => this.deleteProduct(e)} value={item._id}>
+                                                    Delete
+                                                </button>
                                             </div>
                                             <div className="col-md-2">
                                                 <img className="imgSmall" src={item.imageUrl} alt="" />
@@ -148,8 +166,8 @@ class ShoppingCart extends Component {
 
                     <div className="col-md-2 data-Center">
                         <Link to={'/products'}>
-                            <button className="btn btn-outline-info" onClick={e => this.buyMore(e)}>
-                            <i className="fas fa-plus"></i> Buy more
+                            <button className="btn btn-outline-info">
+                                <i className="fas fa-plus"></i> Buy more
                             </button>
                         </Link>
                         <br /><br />
@@ -174,17 +192,50 @@ class ShoppingCart extends Component {
     }
 }
 
-export default ShoppingCart;
+const mapStateToProps = (state) => {
+    return {
+        cartReducer: state.cartReducer
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        deleteAllProducts: (obj) => {
+            dispatch(deleteAllProducts(obj));
+        },
+        deleteOneProduct: (productID) => {
+            dispatch(deleteOneProduct(productID));
+        }
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
+
+//export default ShoppingCart;
 
 /* --------------------- PENDIENTE -------------------
-- ELIMINAR EN CASO DE NO QUERER PRODUCTO Y ACTUALIZAR lista
--SI SE COMPRA EL MISMO PRODUCTO, JUNTARLI Y AUMENTAR LA CANTIDAD
-
+-armar la orden
+-SI SE COMPRA EL MISMO PRODUCTO, JUNTARLO Y AUMENTAR LA CANTIDAD
+- VALIDAR AL PEDIR MAS PRODUCTOS DEL STOCK, MOSTRAR MENSAJE
 
 - al dar click en confirmar orden, limpiar arreglo u objeto
-- cuando se da comprar mas y no se selecciona producto, asigna lo de props
 
---------------------LISTO --------------------------
-- CONFIRMAR QUE AL REGRESAR o NAVEGAR NO SE PIERDAN LOS PRODUCTOS (con boton de comprar mas )
-- VALIDAR AL PEDIR MAS PRODUCTOS DEL STOCK, MOSTRAR MENSAJE
+-limpiar todo lo no necesario
+
+
+
+
+
+--------------------LISTO CON REDUX --------------------------
+- CONFIRMAR QUE AL REGRESAR o NAVEGAR NO SE PIERDAN LOS PRODUCTOS 
+- ELIMINAR EN CASO DE NO QUERER PRODUCTO Y ACTUALIZAR lista
+-CANCELAR ORDEN Y LIMPIAR TODO
+-MOSTRAR CANTIDAD DE PRODUCTOS
+-mandar 1 producto minimo
+
+-quitar lista de roots
+
+
+
+
+
 */
