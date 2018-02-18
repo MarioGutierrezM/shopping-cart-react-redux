@@ -34,9 +34,16 @@ export function deleteOneProduct(productID){
     return{
         type: "DELETE_ONE_PRODUCT",
         payload: new Promise ((resolve, reject)=> {
-            setTimeout(()=>{
                 resolve(productID)
-            },0);
+        })
+    }
+}
+
+export function modifyQuantity(newObj){
+    return{
+        type: "MODIFY_QUANTITY",
+        payload: new Promise((resolve, reject) => {
+            resolve(newObj);
         })
     }
 }

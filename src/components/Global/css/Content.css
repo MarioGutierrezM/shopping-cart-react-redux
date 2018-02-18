@@ -124,10 +124,23 @@
 }
 
 .li-quantity{
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .data-Center {
   text-align: center;
+}
+
+.button-margin{
+  margin-top: 4px;
+}
+
+.border-yellow{
+  border: 1px solid #ffc107;
+}
+
+.border-yellow:focus{
+  border: 1px solid #f3b806a6;
+  background-color: #ffc107;
 }

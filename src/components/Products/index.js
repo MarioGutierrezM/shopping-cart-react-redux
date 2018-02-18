@@ -92,7 +92,7 @@ class Products extends Component {
                                                 value={item._id} 
                                                 className="btn btn-secondary btn-outline-success btn-block"
                                             >
-                                                <i className="fas fa-cart-plus"></i> Add
+                                            <i className="fas fa-cart-plus"></i> Add
                                             </button>
                                         </div>
                                     </div>

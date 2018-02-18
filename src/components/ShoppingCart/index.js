@@ -1,32 +1,31 @@
 //Dependencies
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-
+//Controllers
 import ProductController from "../../controllers/productController";
 import OrderController from "../../controllers/orderController";
-
-//redux
+//Redux
 import { connect } from "react-redux";
-import { deleteAllProducts, deleteOneProduct } from "../../redux/actions/cartActions";
-
-//sweet alert
+import { deleteAllProducts, deleteOneProduct, modifyQuantity } from "../../redux/actions/cartActions";
+//Sweet alert
 import swal from 'sweetalert';
+import { setTimeout } from "timers";
 
 class ShoppingCart extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             clientId: "",
             preOrder: [],
             data: [], //para mostrar despues de la consulta individual con toda la info de los objetos
+            quaPro: 0
         }
     }
 
     componentDidMount() {
         this.setState({
-            clientId: "5a83241a5c3f0506574698e5",
-            //clientId: "5a80a1b56f68da0890fd4555",
+            //clientId: "5a83241a5c3f0506574698e5",
+            clientId: "5a80a1b56f68da0890fd4555",
             preOrder: this.props.cartReducer.cart,  //guarda lo que llega en redux, solo lo uso para la cantidad y crear la orden
         });
         //consulta para poder mostrar mas informacion de cada producto 
@@ -51,32 +50,32 @@ class ShoppingCart extends Component {
             products: this.props.cartReducer.cart,
             client_id: this.state.clientId
         };
-        // let url = 'http://localhost:3000/api/order/';
-        // OrderController.postOrder(url, order, res => {
-        //     if (res.body == null) {
-        //         swal({
-        //             title: "OPS!",
-        //             text: "Some product is Out of Stock, you need to make your order again!",
-        //             icon: "warning",
-        //         });
-        //         this.props.deleteAllProducts();
-        //         this.setState({
-        //             data: [],
-        //             preOrder: []
-        //         });
-        //     } else {
-        //         swal({
-        //             title: "Good job!",
-        //             text: "Order has been done!",
-        //             icon: "success",
-        //         });
-        //         this.props.deleteAllProducts();
-        //         this.setState({
-        //             data: [],
-        //             preOrder: []
-        //         });
-        //     }
-        // });
+        let url = 'http://localhost:3000/api/order/';
+        OrderController.postOrder(url, order, res => {
+            if (res.body == null) {
+                swal({
+                    title: "OPS!",
+                    text: "Some product is Out of Stock, you need to make your order again!",
+                    icon: "warning",
+                });
+                this.props.deleteAllProducts();
+                this.setState({
+                    data: [],
+                    preOrder: []
+                });
+            } else {
+                swal({
+                    title: "Good job!",
+                    text: "Order has been done!",
+                    icon: "success",
+                });
+                this.props.deleteAllProducts();
+                this.setState({
+                    data: [],
+                    preOrder: []
+                });
+            }
+        });
     }
 
     cancelOrder(e) {
@@ -115,6 +114,46 @@ class ShoppingCart extends Component {
         }, 1000);
     }
 
+    handleNumber(e){
+        this.setState({
+            quaPro: e.target.value
+        });
+    }
+
+    changeQuantity(e){
+        let newObj = {
+           product: e.target.value,
+           quantity: Number(this.state.quaPro)
+        };
+        this.props.deleteOneProduct(e.target.value);        
+        this.props.modifyQuantity(newObj);
+        setTimeout(()=>{
+            let prodTemp = [];
+            let i = 0;
+            if (this.props.cartReducer.cart.length > 0) {
+                //console.log("with data", this.props.cartReducer.cart.length);
+                for (i in this.props.cartReducer.cart) {
+                    let id = `${this.props.cartReducer.cart[i].product}`;
+                    let url = `http://localhost:3000/api/product/${id}`;
+                    ProductController.getProduct(url, res => {
+                        prodTemp.push(res.body);
+                        console.log("data", prodTemp);
+                        this.setState({
+                            data: prodTemp,
+                            preOrder: this.props.cartReducer.cart,
+                            quaPro: 0
+                        });
+                    });
+                }
+            } else {
+                this.setState({
+                    data: [],
+                    preOrder: []
+                });
+            }
+        },1000)
+    }
+
 
     render() {
         return (
@@ -124,7 +163,7 @@ class ShoppingCart extends Component {
                 <hr />
                 <div className="row">
 
-                    <div className="col-md-9 join-list">
+                    <div className="col-md-8 join-list">
                         {this.state.data.map((item, key) => {
                             return (
 
@@ -156,14 +195,26 @@ class ShoppingCart extends Component {
                         })}
                     </div>
 
-                    <div className="col-md-1 join-list">
+                    <div className="col-md-2 join-list">
                         {this.state.preOrder.map((quantity, key2) => {
                             return (
                                 <ul key={key2} className="list-group">
                                     <li className="list-group-item li-quantity data-Center">
-                                        <span className="badge badge-primary badge-pill">
-                                            {quantity.quantity}
+                                        <span className="badge badge-warning badge-pill">
+                                            Quantity: {quantity.quantity}
                                         </span>
+                                        <input
+                                            className="form-control border-yellow" 
+                                            type="number"
+                                            onChange={e => this.handleNumber(e)} 
+                                        />
+                                        <button
+                                            className="btn btn-outline-warning button-margin"
+                                            value={quantity.product}
+                                            onClick={e=>this.changeQuantity(e)}
+                                        >
+                                            Modify
+                                        </button>
                                     </li>
                                 </ul>
                             )
@@ -211,6 +262,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         deleteOneProduct: (productID) => {
             dispatch(deleteOneProduct(productID));
+        },
+        modifyQuantity: (newObj) => {
+            dispatch(modifyQuantity(newObj));
         }
     };
 };
@@ -220,11 +274,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
 
 /* --------------------- PENDIENTE -------------------
 
--SI SE COMPRA EL MISMO PRODUCTO, JUNTARLO Y AUMENTAR LA CANTIDAD 
--poder modificar la cantidad desde el cart
--limpiar todo lo no necesario
 
--corregir al eliminar productos y clientes en pagina administracion 
+-limpiar todo lo no necesario
+-eliminar ordenes
+-corregir al eliminar productos y clientes en pagina administracion: que no quede uno al final
 
 
 
@@ -239,26 +292,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
 -armar la orden
 - al dar click en confirmar orden, limpiar arreglo u objeto
 - VALIDAR AL PEDIR MAS PRODUCTOS DEL STOCK, MOSTRAR MENSAJE
+-SI SE COMPRA EL MISMO PRODUCTO, no agregarlo  
+-poder modificar la cantidad desde el cart
 
 
 -quitar lista de roots
 
-*/
-
-
-
-/*
-var array1 = [5, 12, 8, 130, 44, 1100];
-var element = 5;
-var found = array1.find(function(itera) {
-  return element === itera ;
-});
-
-//console.log(found);
-// expected output: 12
-if( found ){
-  console.log("le debo sumar 1")
-}else{
-  console.log("lo agrgo normal")
-}
 */
