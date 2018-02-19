@@ -24,8 +24,9 @@ class ShoppingCart extends Component {
 
     componentDidMount() {
         this.setState({
-            clientId: "5a83241a5c3f0506574698e5",
-            //clientId: "5a80a1b56f68da0890fd4555",
+            //clientId: "5a83241a5c3f0506574698e5", //mac
+            clientId: "5a8b19db8a6a5d00151df52e", //heroku
+            //clientId: "5a80a1b56f68da0890fd4555", //casa
             preOrder: this.props.cartReducer.cart,  //guarda lo que llega en redux, solo lo uso para la cantidad y crear la orden
         });
         //consulta para poder mostrar mas informacion de cada producto 
