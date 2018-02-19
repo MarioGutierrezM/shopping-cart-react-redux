@@ -1,7 +1,8 @@
 //Depndencies
 import React, { Component } from "react";
 import ClientController from "../../controllers/clientController";
-
+//Sweet alert
+import swal from 'sweetalert';
 
 class ClientCreate extends Component {
 
@@ -51,12 +52,17 @@ class ClientCreate extends Component {
         ClientController.postClient(urlClient,
             {
                 name: this.state.name,
-                lastnamefa: this.state.lastnamefa ,
-                lastnamemo: this.state.lastnamemo ,
+                lastnamefa: this.state.lastnamefa,
+                lastnamemo: this.state.lastnamemo,
                 birthdate: this.state.birthdate,
                 address: this.state.address
             }
         );
+        swal({
+            title: "Good job!",
+            text: "Client has been created!",
+            icon: "success",
+        });
     }
 
     handleNameInputChanged(e) {
@@ -134,22 +140,22 @@ class ClientCreate extends Component {
                                                 <label htmlFor="lastnameFC">Father's Last Name </label>
                                                 {
                                                     this.state.show1
-                                                        ? <input 
-                                                            type="text" 
-                                                            className="form-control input-green" 
-                                                            id="lastnameFC" 
-                                                            value={this.state.lastnamefa} 
-                                                            onChange={e => this.handleLast1InputChanged(e)} 
-                                                            placeholder="Enter a father's lastname" 
+                                                        ? <input
+                                                            type="text"
+                                                            className="form-control input-green"
+                                                            id="lastnameFC"
+                                                            value={this.state.lastnamefa}
+                                                            onChange={e => this.handleLast1InputChanged(e)}
+                                                            placeholder="Enter a father's lastname"
                                                         />
-                                                        : <input 
-                                                            type="text" 
-                                                            className="form-control input-green" 
-                                                            id="lastnameFC" 
-                                                            value={this.state.lastnamefa} 
-                                                            onChange={e => this.handleLast1InputChanged(e)} 
-                                                            placeholder="Enter a father's lastname" 
-                                                            disabled 
+                                                        : <input
+                                                            type="text"
+                                                            className="form-control input-green"
+                                                            id="lastnameFC"
+                                                            value={this.state.lastnamefa}
+                                                            onChange={e => this.handleLast1InputChanged(e)}
+                                                            placeholder="Enter a father's lastname"
+                                                            disabled
                                                         />
                                                 }
                                             </div>
@@ -157,22 +163,22 @@ class ClientCreate extends Component {
                                                 <label htmlFor="lastnameMC">Mother's Last Name</label>
                                                 {
                                                     this.state.show2
-                                                        ? <input 
-                                                            type="text" 
+                                                        ? <input
+                                                            type="text"
                                                             className="form-control input-green"
-                                                            id="lastnameMC" 
-                                                            value={this.state.lastnamemo} 
-                                                            onChange={e => this.handleLast2InputChanged(e)} 
-                                                            placeholder="Enter mother's last name" 
+                                                            id="lastnameMC"
+                                                            value={this.state.lastnamemo}
+                                                            onChange={e => this.handleLast2InputChanged(e)}
+                                                            placeholder="Enter mother's last name"
                                                         />
-                                                        : <input 
-                                                            type="text" 
-                                                            className="form-control input-green" 
-                                                            id="lastnameMC" 
-                                                            value={this.state.lastnamemo} 
-                                                            onChange={e => this.handleLast2InputChanged(e)} 
-                                                            placeholder="Enter mother's last name" 
-                                                            disabled 
+                                                        : <input
+                                                            type="text"
+                                                            className="form-control input-green"
+                                                            id="lastnameMC"
+                                                            value={this.state.lastnamemo}
+                                                            onChange={e => this.handleLast2InputChanged(e)}
+                                                            placeholder="Enter mother's last name"
+                                                            disabled
                                                         />
                                                 }
                                             </div>
@@ -180,24 +186,24 @@ class ClientCreate extends Component {
                                                 <label htmlFor="birthdateC">Birthdate</label>
                                                 {
                                                     this.state.show3
-                                                        ? <input 
-                                                            type="Date" 
-                                                            max="1999-12-31" 
-                                                            className="form-control input-green" 
-                                                            id="birthdateC" 
-                                                            value={this.state.birthdate} 
-                                                            onChange={e => this.handleBirthInputChanged(e)} 
-                                                            placeholder="Enter  YYYY-MM-DD" 
+                                                        ? <input
+                                                            type="Date"
+                                                            max="1999-12-31"
+                                                            className="form-control input-green"
+                                                            id="birthdateC"
+                                                            value={this.state.birthdate}
+                                                            onChange={e => this.handleBirthInputChanged(e)}
+                                                            placeholder="Enter  YYYY-MM-DD"
                                                         />
-                                                        : <input 
-                                                            type="Date" 
-                                                            max="1999-12-31" 
-                                                            className="form-control input-green" 
-                                                            id="birthdateC" 
-                                                            value={this.state.birthdate} 
-                                                            onChange={e => this.handleBirthInputChanged(e)} 
-                                                            placeholder="Enter  YYYY-MM-DD" 
-                                                            disabled 
+                                                        : <input
+                                                            type="Date"
+                                                            max="1999-12-31"
+                                                            className="form-control input-green"
+                                                            id="birthdateC"
+                                                            value={this.state.birthdate}
+                                                            onChange={e => this.handleBirthInputChanged(e)}
+                                                            placeholder="Enter  YYYY-MM-DD"
+                                                            disabled
                                                         />
                                                 }
                                             </div>
@@ -205,22 +211,22 @@ class ClientCreate extends Component {
                                                 <label htmlFor="addressC">Address</label>
                                                 {
                                                     this.state.show4
-                                                        ? <input 
-                                                            type="text" 
+                                                        ? <input
+                                                            type="text"
                                                             className="form-control input-green"
-                                                            id="addressC" 
-                                                            value={this.state.address} 
-                                                            onChange={e => this.handleAddressInputChanged(e)} 
-                                                            placeholder="Enter an address" 
+                                                            id="addressC"
+                                                            value={this.state.address}
+                                                            onChange={e => this.handleAddressInputChanged(e)}
+                                                            placeholder="Enter an address"
                                                         />
-                                                        : <input 
-                                                            type="text" 
-                                                            className="form-control input-green" 
-                                                            id="addressC" 
-                                                            value={this.state.address} 
-                                                            onChange={e => this.handleAddressInputChanged(e)} 
-                                                            placeholder="Enter an address" 
-                                                            disabled 
+                                                        : <input
+                                                            type="text"
+                                                            className="form-control input-green"
+                                                            id="addressC"
+                                                            value={this.state.address}
+                                                            onChange={e => this.handleAddressInputChanged(e)}
+                                                            placeholder="Enter an address"
+                                                            disabled
                                                         />
                                                 }
                                             </div>
@@ -233,16 +239,16 @@ class ClientCreate extends Component {
                                             Close
                                         </button>
                                         {
-                                            this.state.show1 && this.state.show2 && this.state.show3 && this.state.show4 && this.state.show5 
-                                                ?<button 
-                                                    onClick={this.postClient} 
-                                                    id="newClientMade" 
+                                            this.state.show1 && this.state.show2 && this.state.show3 && this.state.show4 && this.state.show5
+                                                ? <button
+                                                    onClick={this.postClient}
+                                                    id="newClientMade"
                                                     className="btn btn-outline-success">Save</button>
 
-                                                :<button 
-                                                    onClick={this.postClient} 
-                                                    id="newClientMade" 
-                                                    className="btn btn-outline-success" 
+                                                : <button
+                                                    onClick={this.postClient}
+                                                    id="newClientMade"
+                                                    className="btn btn-outline-success"
                                                     disabled>Save</button>
                                         }
                                     </div>

@@ -1,6 +1,8 @@
 //Depndencies
 import React, { Component } from "react";
 import ProductController from "../../controllers/productController";
+//Sweet alert
+import swal from 'sweetalert';
 
 class ProductCreate extends Component {
 
@@ -51,15 +53,20 @@ class ProductCreate extends Component {
         let API_URL = 'https://shopping-cart-api.herokuapp.com'
         const url = `${API_URL}/api/product/` || 'http://localhost:3000/api/product/';
         ProductController.postProduct(url,
-        {
-            name: this.state.name,
-            description: this.state.description,
-            category: this.state.category,
-            stock: Number(this.state.stock),
-            price: Number(this.state.price),
-            imageUrl: this.state.imageUrl 
-        }
-    );
+            {
+                name: this.state.name,
+                description: this.state.description,
+                category: this.state.category,
+                stock: Number(this.state.stock),
+                price: Number(this.state.price),
+                imageUrl: this.state.imageUrl
+            }
+        );
+        swal({
+            title: "Good job!",
+            text: "Product has been created!",
+            icon: "success",
+        });
     }
 
     handleNameInputChanged(e) {
