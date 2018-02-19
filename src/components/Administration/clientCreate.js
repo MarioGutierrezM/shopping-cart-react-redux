@@ -46,7 +46,8 @@ class ClientCreate extends Component {
     }
 
     postClient(e) {
-        const urlClient = `${process.env.API_URL}/api/client/` || 'http://localhost:3000/api/client/';
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        const urlClient = `${API_URL}/api/client/` || 'http://localhost:3000/api/client/';
         ClientController.postClient(urlClient,
             {
                 name: this.state.name,

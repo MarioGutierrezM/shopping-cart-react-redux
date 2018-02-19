@@ -15,7 +15,8 @@ class Orders extends Component {
     }
 
     componentDidMount() {
-        const url = `${process.env.API_URL}/api/order/` || 'http://localhost:3000/api/order';
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        const url = `${API_URL}/api/order/` || 'http://localhost:3000/api/order';
         OrderController.getAllOrders(url, res => {
             this.setState({
                 data: res.body

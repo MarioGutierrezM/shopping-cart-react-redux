@@ -20,7 +20,8 @@ class ProductUpdateModal extends Component {
     }
 
     componentDidMount() {
-        let url = `${process.env.API_URL}/api/product/${this.props.match.params.id}` || `http://localhost:3000/api/product/${this.props.match.params.id}`;
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        let url = `${API_URL}/api/product/${this.props.match.params.id}` || `http://localhost:3000/api/product/${this.props.match.params.id}`;
         ProductController.getProduct(url, res => {
             this.setState({
                 data: res.body,
@@ -82,7 +83,8 @@ class ProductUpdateModal extends Component {
     }
 
     modifyProduct(e){
-        let url = `${process.env.API_URL}/api/product/${this.props.match.params.id}` || `http://localhost:3000/api/product/${this.props.match.params.id}`;
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        let url = `${API_URL}/api/product/${this.props.match.params.id}` || `http://localhost:3000/api/product/${this.props.match.params.id}`;
         ProductController.putProduct(url, 
             {
                 name: this.state.name || this.state.data.name,

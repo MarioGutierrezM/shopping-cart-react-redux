@@ -18,7 +18,8 @@ class ClientUpdateForm extends Component{
     }
 
     componentDidMount(){
-        let url = `${process.env.API_URL}/api/client/${this.props.match.params.id}` || `http://localhost:3000/api/client/${this.props.match.params.id}`;
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        let url = `${API_URL}/api/client/${this.props.match.params.id}` || `http://localhost:3000/api/client/${this.props.match.params.id}`;
         ClientController.getClient(url, res => {
             this.setState({
                 data: res.body,
@@ -61,7 +62,8 @@ class ClientUpdateForm extends Component{
     }
 
     modifyClient(e){
-        let url =  `${process.env.API_URL}/api/client/${this.props.match.params.id}` || `http://localhost:3000/api/client/${this.props.match.params.id}`;
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        let url =  `${API_URL}/api/client/${this.props.match.params.id}` || `http://localhost:3000/api/client/${this.props.match.params.id}`;
         ClientController.putClient(url, 
         {
             name: this.state.name || this.state.data.name,
@@ -71,7 +73,8 @@ class ClientUpdateForm extends Component{
             address: this.state.address || this.state.data.address
         },
         ()=>{
-            let url =`${process.env.API_URL}/api/client/${this.props.match.params.id}`|| `http://localhost:3000/api/client/${this.props.match.params.id}`;
+            let API_URL = 'https://shopping-cart-api.herokuapp.com'
+            let url =`${API_URL}/api/client/${this.props.match.params.id}`|| `http://localhost:3000/api/client/${this.props.match.params.id}`;
             ClientController.getClient(url, res => {
                 this.setState({
                     data: res.body

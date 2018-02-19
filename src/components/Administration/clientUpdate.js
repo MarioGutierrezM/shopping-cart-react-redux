@@ -21,7 +21,8 @@ class ClientUpdate extends Component {
     }
 
     onOpen(e) {
-        let url = `${process.env.API_URL}/api/client/` || 'http://localhost:3000/api/client/';
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        let url = `${API_URL}/api/client/` || 'http://localhost:3000/api/client/';
         ClientController.getAllClients(url, res => {
             this.setState({
                 data: res.body

@@ -19,7 +19,8 @@ class ProductDelete extends Component {
     }
 
     openModal(e) {
-        const url = `${process.env.API_URL}/api/product/` || 'http://localhost:3000/api/product/';
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        const url = `${API_URL}/api/product/` || 'http://localhost:3000/api/product/';
         ProductController.getAllProducts(url, res => {
             this.setState({
                 data: res.body
@@ -28,7 +29,8 @@ class ProductDelete extends Component {
     }
 
     deleteProduct(e) {
-        let urlToDelete = `${process.env.API_URL}/api/product/${e.target.value}` || `http://localhost:3000/api/product/${e.target.value}`;
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        let urlToDelete = `${API_URL}/api/product/${e.target.value}` || `http://localhost:3000/api/product/${e.target.value}`;
         ProductController.deleteProduct(urlToDelete);
 
         // se manda el id y el arreglo

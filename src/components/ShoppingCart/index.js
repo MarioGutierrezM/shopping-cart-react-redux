@@ -34,7 +34,8 @@ class ShoppingCart extends Component {
         for (i in this.props.cartReducer.cart) {
             //console.log("i", i, this.props.cartReducer.cart[i]);
             let id = `${this.props.cartReducer.cart[i].product}`;
-            let url = `${process.env.API_URL}/api/product/${id}` || `http://localhost:3000/api/product/${id}`;
+            let API_URL = 'https://shopping-cart-api.herokuapp.com'
+            let url = `${API_URL}/api/product/${id}` || `http://localhost:3000/api/product/${id}`;
             ProductController.getProduct(url, res => {
                 prodTemp.push(res.body);
                 console.log("data", prodTemp);
@@ -50,7 +51,8 @@ class ShoppingCart extends Component {
             products: this.props.cartReducer.cart,
             client_id: this.state.clientId
         };
-        let url = `${process.env.API_URL}/api/order/` || 'http://localhost:3000/api/order/';
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        let url = `${API_URL}/api/order/` || 'http://localhost:3000/api/order/';
         OrderController.postOrder(url, order, res => {
             if (res.body == null) {
                 swal({
@@ -95,7 +97,8 @@ class ShoppingCart extends Component {
                 //console.log("with data", this.props.cartReducer.cart.length);
                 for (i in this.props.cartReducer.cart) {
                     let id = `${this.props.cartReducer.cart[i].product}`;
-                    let url = `${process.env.API_URL}/api/product/${id}` || `http://localhost:3000/api/product/${id}`;
+                    let API_URL = 'https://shopping-cart-api.herokuapp.com'
+                    let url = `${API_URL}/api/product/${id}` || `http://localhost:3000/api/product/${id}`;
                     ProductController.getProduct(url, res => {
                         prodTemp.push(res.body);
                         console.log("data", prodTemp);
@@ -134,7 +137,8 @@ class ShoppingCart extends Component {
                 //console.log("with data", this.props.cartReducer.cart.length);
                 for (i in this.props.cartReducer.cart) {
                     let id = `${this.props.cartReducer.cart[i].product}`;
-                    let url = `${process.env.API_URL}/api/product/${id}` || `http://localhost:3000/api/product/${id}`;
+                    let API_URL = 'https://shopping-cart-api.herokuapp.com'
+                    let url = `${API_URL}/api/product/${id}` || `http://localhost:3000/api/product/${id}`;
                     ProductController.getProduct(url, res => {
                         prodTemp.push(res.body);
                         console.log("data", prodTemp);

@@ -48,7 +48,8 @@ class ProductCreate extends Component {
     }
 
     postProduct(e) {
-        const url = `${process.env.API_URL}/api/product/` || 'http://localhost:3000/api/product/';
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        const url = `${API_URL}/api/product/` || 'http://localhost:3000/api/product/';
         ProductController.postProduct(url,
         {
             name: this.state.name,
