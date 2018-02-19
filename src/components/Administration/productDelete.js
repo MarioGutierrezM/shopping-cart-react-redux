@@ -19,7 +19,7 @@ class ProductDelete extends Component {
     }
 
     openModal(e) {
-        const url = 'http://localhost:3000/api/product/';
+        const url = `${process.env.API_URL}/api/product/` || 'http://localhost:3000/api/product/';
         ProductController.getAllProducts(url, res => {
             this.setState({
                 data: res.body
@@ -28,7 +28,7 @@ class ProductDelete extends Component {
     }
 
     deleteProduct(e) {
-        let urlToDelete = `http://localhost:3000/api/product/${e.target.value}`;
+        let urlToDelete = `${process.env.API_URL}/api/product/${e.target.value}` || `http://localhost:3000/api/product/${e.target.value}`;
         ProductController.deleteProduct(urlToDelete);
 
         // se manda el id y el arreglo

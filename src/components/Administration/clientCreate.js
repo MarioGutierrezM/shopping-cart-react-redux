@@ -46,7 +46,7 @@ class ClientCreate extends Component {
     }
 
     postClient(e) {
-        const urlClient = 'http://localhost:3000/api/client/';
+        const urlClient = `${process.env.API_URL}/api/client/` || 'http://localhost:3000/api/client/';
         ClientController.postClient(urlClient,
             {
                 name: this.state.name,

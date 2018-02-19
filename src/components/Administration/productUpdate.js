@@ -20,7 +20,7 @@ class ProductUpdate extends Component {
     }
 
     onOpen(e){
-        let url = 'http://localhost:3000/api/product/';
+        let url = `${process.env.API_URL}/api/product/` || 'http://localhost:3000/api/product/';
         ProductController.getAllProducts(url, res => {
             this.setState({
                 data: res.body

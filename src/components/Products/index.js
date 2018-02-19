@@ -22,7 +22,7 @@ class Products extends Component {
     }
 
     componentDidMount() {
-        const url = 'http://localhost:3000/api/product';
+        const url = `${process.env.API_URL}/api/product` || 'http://localhost:3000/api/product';
         productController.getAllProducts(url, res => {
             this.setState({
                 data: res.body

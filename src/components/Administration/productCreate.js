@@ -48,7 +48,7 @@ class ProductCreate extends Component {
     }
 
     postProduct(e) {
-        const url = 'http://localhost:3000/api/product/';
+        const url = `${process.env.API_URL}/api/product/` || 'http://localhost:3000/api/product/';
         ProductController.postProduct(url,
         {
             name: this.state.name,

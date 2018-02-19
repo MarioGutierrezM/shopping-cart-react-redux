@@ -21,7 +21,7 @@ class ClientUpdate extends Component {
     }
 
     onOpen(e) {
-        let url = 'http://localhost:3000/api/client/';
+        let url = `${process.env.API_URL}/api/client/` || 'http://localhost:3000/api/client/';
         ClientController.getAllClients(url, res => {
             this.setState({
                 data: res.body

@@ -15,7 +15,7 @@ class Orders extends Component {
     }
 
     componentDidMount() {
-        const url = 'http://localhost:3000/api/order';
+        const url = `${process.env.API_URL}/api/order/` || 'http://localhost:3000/api/order';
         OrderController.getAllOrders(url, res => {
             this.setState({
                 data: res.body

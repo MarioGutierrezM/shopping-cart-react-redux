@@ -15,7 +15,7 @@ class Order extends Component {
     componentDidMount() {
         let id = this.props.match.params.id;
         console.log("order id: ", id);
-        const url = `http://localhost:3000/api/order/${id}`;
+        const url = `${process.env.API_URL}/api/order/${id}` || `http://localhost:3000/api/order/${id}`;
         OrderController.getOrder(url, res => {
             this.setState({
                 data: res.body

@@ -17,7 +17,7 @@ class Product extends Component {
     componentDidMount() {
         console.log(this.props.match.params.id);
         let id = this.props.match.params.id;
-        const url = `http://localhost:3000/api/product/${id}`;
+        const url = `${process.env.API_URL}/api/product/${id}` || `http://localhost:3000/api/product/${id}`;
         ProductController.getProduct(url, res => {
             this.setState({
                 data: res.body

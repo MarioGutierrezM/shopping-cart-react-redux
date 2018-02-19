@@ -21,7 +21,7 @@ class ClientDelete extends Component {
     }
 
     openModal(e){
-        let url = 'http://localhost:3000/api/client/';
+        let url = `${process.env.API_URL}/api/client/` || 'http://localhost:3000/api/client/';
         ClientController.getAllClients(url, res => {
             this.setState({
                 data: res.body
@@ -30,7 +30,7 @@ class ClientDelete extends Component {
     }
 
     deleteclient(e){
-        let url = `http://localhost:3000/api/client/${e.target.value}`;
+        let url = `${process.env.API_URL}/api/client/${e.target.value}` ||  `http://localhost:3000/api/client/${e.target.value}`;
         ClientController.deleteClient(url);
         ClientController.clearList(e.target.value, this.state.data, newData => {
             this.setState({

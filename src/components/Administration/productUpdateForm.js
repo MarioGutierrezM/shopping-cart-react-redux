@@ -20,7 +20,7 @@ class ProductUpdateModal extends Component {
     }
 
     componentDidMount() {
-        let url = `http://localhost:3000/api/product/${this.props.match.params.id}`;
+        let url = `${process.env.API_URL}/api/product/${this.props.match.params.id}` || `http://localhost:3000/api/product/${this.props.match.params.id}`;
         ProductController.getProduct(url, res => {
             this.setState({
                 data: res.body,
@@ -82,7 +82,7 @@ class ProductUpdateModal extends Component {
     }
 
     modifyProduct(e){
-        let url = `http://localhost:3000/api/product/${this.props.match.params.id}`;
+        let url = `${process.env.API_URL}/api/product/${this.props.match.params.id}` || `http://localhost:3000/api/product/${this.props.match.params.id}`;
         ProductController.putProduct(url, 
             {
                 name: this.state.name || this.state.data.name,
