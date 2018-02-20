@@ -27,6 +27,10 @@
   background-color: #28a7464f;
 }
 
+.pag-center {
+  justify-content: center;
+}
+
 /* sizes of images */
 .imgMed {
   height: 350px;

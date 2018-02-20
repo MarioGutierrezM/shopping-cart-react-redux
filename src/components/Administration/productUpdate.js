@@ -10,7 +10,8 @@ class ProductUpdate extends Component {
         super();
 
         this.state = {
-            data: []
+            data: [],
+            pagination: 0
         };
         //con bind se optiene todo el objeto this de la clase
         this.onOpen = this.onOpen.bind(this);
@@ -19,9 +20,10 @@ class ProductUpdate extends Component {
     componentDidMount() {
     }
 
-    onOpen(e){
+    onOpen(e) {
         let API_URL = 'https://shopping-cart-api.herokuapp.com'
-        let url = `${API_URL}/api/product/` || 'http://localhost:3000/api/product/';
+        let url =   `${API_URL}/api/product?category=&name=&page=${this.state.pagination}&items=4` ||
+                    `http://localhost:3000/api/product?category=&name=&page=${this.state.pagination}&items=4`;
         ProductController.getAllProducts(url, res => {
             this.setState({
                 data: res.body
@@ -29,7 +31,44 @@ class ProductUpdate extends Component {
         });
     }
 
+    async handlePaginationPrev(e) {
+        if (this.state.pagination === 0) {
+            let API_URL = 'https://shopping-cart-api.herokuapp.com'
+            let url =   `${API_URL}/api/product?category=&name=&page=${this.state.pagination}&items=4` ||
+                        `http://localhost:3000/api/product?category=&name=&page=${this.state.pagination}&items=4`;
+            ProductController.getAllProducts(url, res => {
+                this.setState({
+                    data: res.body
+                });
+            });
+        } else {
+            await this.setState({
+                pagination: this.state.pagination - 1
+            });
+            let API_URL = 'https://shopping-cart-api.herokuapp.com'
+            let url =   `${API_URL}/api/product?category=&name=&page=${this.state.pagination}&items=4` || 
+                        `http://localhost:3000/api/product?category=&name=&page=${this.state.pagination}&items=4`;
+            ProductController.getAllProducts(url, res => {
+                this.setState({
+                    data: res.body
+                });
+            });
+        }
+    }
 
+    async handlePaginationNext(e) {
+        await this.setState({
+            pagination: this.state.pagination + 1
+        });
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        let url =   `${API_URL}/api/product?category=&name=&page=${this.state.pagination}&items=4` || 
+                    `http://localhost:3000/api/product?category=&name=&page=${this.state.pagination}&items=4`;
+        ProductController.getAllProducts(url, res => {
+            this.setState({
+                data: res.body
+            });
+        });
+    }
 
     render() {
         return (
@@ -40,31 +79,41 @@ class ProductUpdate extends Component {
                     </button>
                     <div className="collapse" id="productUpd">
                         <div className="card card-body">
-                        <ul className="list-group">
-                            { this.state.data.map((product, key) => {
-                                return (
-                                    <li className="list-group-item" key={key}>
-                                        <div className="row">
-                                            <div className="col-md-4 listSmall"> 
-                                                <img className="imgSmall2" src={product.imageUrl} alt=""/>
+                            <ul className="list-group">
+                                {this.state.data.map((product, key) => {
+                                    return (
+                                        <li className="list-group-item" key={key}>
+                                            <div className="row">
+                                                <div className="col-md-4 listSmall">
+                                                    <img className="imgSmall2" src={product.imageUrl} alt="" />
+                                                </div>
+                                                <div className="col-md-4 listSmall listLeft">
+                                                    Name: {product.name} <br />
+                                                    Description: {product.description}<br />
+                                                    Category: {product.category}<br />
+                                                    Price: {product.price}<br />
+                                                    Stock: {product.stock}
+                                                </div>
+                                                <div className="col-md-4 listSmall listCenter">
+                                                    <Link to={`/admin/updateProduct/${product._id}`} className="darkYellow">
+                                                        <button className="btn btn-outline-warning darkYellow" >  Modify </button>
+                                                    </Link>
+                                                </div>
                                             </div>
-                                            <div className="col-md-4 listSmall listLeft">
-                                                Name: {product.name} <br/>
-                                                Description: {product.description}<br/>
-                                                Category: {product.category}<br/>
-                                                Price: {product.price}<br/>
-                                                Stock: {product.stock}
-                                            </div>
-                                            <div className="col-md-4 listSmall listCenter">
-                                                <Link to={`/admin/updateProduct/${product._id}`} className="darkYellow">
-                                                    <button className="btn btn-outline-warning darkYellow" >  Modify </button>
-                                                </Link>
-                                            </div>
-                                        </div>
-                                    </li>
-                                )
-                            })}
+                                        </li>
+                                    )
+                                })}
                             </ul>
+                        </div>
+                        <div>
+                            <br />
+                            <nav aria-label="Page navigation example">
+                                <ul className="pagination pag-center">
+                                    <li className="page-item"><a className="page-link" onClick={e => this.handlePaginationPrev(e)}>Previous</a></li>
+                                    <li className="page-item disabled"><a className="page-link" >{this.state.pagination + 1}</a></li>
+                                    <li className="page-item"><a className="page-link" onClick={e => this.handlePaginationNext(e)}>Next</a></li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>

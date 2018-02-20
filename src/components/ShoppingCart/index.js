@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { deleteAllProducts, deleteOneProduct, modifyQuantity } from "../../redux/actions/cartActions";
 //Sweet alert
 import swal from 'sweetalert';
-import { setTimeout } from "timers";
+//import { setTimeout } from "timers";
 
 class ShoppingCart extends Component {
     constructor(props) {
@@ -20,6 +20,7 @@ class ShoppingCart extends Component {
             data: [], //para mostrar despues de la consulta individual con toda la info de los objetos
             quaPro: 0
         }
+        this.loadProducts = this.loadProducts.bind(this);
     }
 
     componentDidMount() {
@@ -29,22 +30,7 @@ class ShoppingCart extends Component {
             //clientId: "5a80a1b56f68da0890fd4555", //casa
             preOrder: this.props.cartReducer.cart,  //guarda lo que llega en redux, solo lo uso para la cantidad y crear la orden
         });
-        //consulta para poder mostrar mas informacion de cada producto 
-        let prodTemp = [];
-        let i = 0;
-        for (i in this.props.cartReducer.cart) {
-            //console.log("i", i, this.props.cartReducer.cart[i]);
-            let id = `${this.props.cartReducer.cart[i].product}`;
-            let API_URL = 'https://shopping-cart-api.herokuapp.com'
-            let url = `${API_URL}/api/product/${id}` || `http://localhost:3000/api/product/${id}`;
-            ProductController.getProduct(url, res => {
-                prodTemp.push(res.body);
-                console.log("data", prodTemp);
-                this.setState({
-                    data: prodTemp
-                });
-            });
-        }
+        this.loadProducts();
     }
 
     newOrder(e) {
@@ -52,7 +38,7 @@ class ShoppingCart extends Component {
             products: this.props.cartReducer.cart,
             client_id: this.state.clientId
         };
-        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        let API_URL = 'https://shopping-cart-api.herokuapp.com';
         let url = `${API_URL}/api/order/` || 'http://localhost:3000/api/order/';
         OrderController.postOrder(url, order, res => {
             if (res.body == null) {
@@ -86,79 +72,53 @@ class ShoppingCart extends Component {
         this.setState({
             data: [],
             preOrder: this.props.cartReducer.cart,  //ya llega limpio
-        })
+        });
     }
 
-    deleteProduct(e) {
-        this.props.deleteOneProduct(e.target.value);
-        setTimeout(() => {
-            let prodTemp = [];
-            let i = 0;
-            if (this.props.cartReducer.cart.length > 0) {
-                //console.log("with data", this.props.cartReducer.cart.length);
-                for (i in this.props.cartReducer.cart) {
-                    let id = `${this.props.cartReducer.cart[i].product}`;
-                    let API_URL = 'https://shopping-cart-api.herokuapp.com'
-                    let url = `${API_URL}/api/product/${id}` || `http://localhost:3000/api/product/${id}`;
-                    ProductController.getProduct(url, res => {
-                        prodTemp.push(res.body);
-                        console.log("data", prodTemp);
-                        this.setState({
-                            data: prodTemp,
-                            preOrder: this.props.cartReducer.cart
-                        });
-                    });
-                }
-            } else {
-                this.setState({
-                    data: [],
-                    preOrder: []
-                });
-            }
-        }, 1000);
+    async deleteProduct(e) {
+        await this.props.deleteOneProduct(e.target.value);
+        this.loadProducts();
     }
 
-    handleNumber(e){
+    handleNumber(e) {
         this.setState({
             quaPro: e.target.value
         });
     }
 
-    changeQuantity(e){
+    async changeQuantity(e) {
         let newObj = {
-           product: e.target.value,
-           quantity: Number(this.state.quaPro)
+            product: e.target.value,
+            quantity: Number(this.state.quaPro)
         };
-        this.props.deleteOneProduct(e.target.value);
-        this.props.modifyQuantity(newObj);
-        setTimeout(()=>{
-            let prodTemp = [];
-            let i = 0;
-            if (this.props.cartReducer.cart.length > 0) {
-                //console.log("with data", this.props.cartReducer.cart.length);
-                for (i in this.props.cartReducer.cart) {
-                    let id = `${this.props.cartReducer.cart[i].product}`;
-                    let API_URL = 'https://shopping-cart-api.herokuapp.com'
-                    let url = `${API_URL}/api/product/${id}` || `http://localhost:3000/api/product/${id}`;
-                    ProductController.getProduct(url, res => {
-                        prodTemp.push(res.body);
-                        console.log("data", prodTemp);
-                        this.setState({
-                            data: prodTemp,
-                            preOrder: this.props.cartReducer.cart,
-                            quaPro: 0
-                        });
-                    });
-                }
-            } else {
-                this.setState({
-                    data: [],
-                    preOrder: []
-                });
-            }
-        },1000)
+        await this.props.deleteOneProduct(e.target.value);
+        await this.props.modifyQuantity(newObj);
+        this.loadProducts();
     }
 
+    async loadProducts() {
+        if (this.props.datos.length > 0) {
+            let prodTemp = [];
+            for (let i in this.props.cartReducer.cart) {
+                let id = `${this.props.cartReducer.cart[i].product}`;
+                let API_URL = 'https://shopping-cart-api.herokuapp.com';
+                let url = `${API_URL}/api/product/${id}` || `http://localhost:3000/api/product/${id}`;
+                await ProductController.getProduct(url, res => {
+                    prodTemp.push(res.body);
+                    this.setState({
+                        data: prodTemp,
+                        preOrder: this.props.cartReducer.cart,
+                        quaPro: 0
+                    });
+                });
+            }
+        }else {
+            this.setState({
+                data: [],
+                preOrder: []
+            });
+        }
+    }
 
     render() {
         return (
@@ -171,7 +131,6 @@ class ShoppingCart extends Component {
                     <div className="col-md-8 join-list">
                         {this.state.data.map((item, key) => {
                             return (
-
                                 <ul key={key} className="list-group">
                                     <li className="list-group-item data-Center">
                                         <div className="row align-items-center">
@@ -209,14 +168,14 @@ class ShoppingCart extends Component {
                                             Quantity: {quantity.quantity}
                                         </span>
                                         <input
-                                            className="form-control border-yellow" 
+                                            className="form-control border-yellow"
                                             type="number"
-                                            onChange={e => this.handleNumber(e)} 
+                                            onChange={e => this.handleNumber(e)}
                                         />
                                         <button
                                             className="btn btn-outline-warning button-margin"
                                             value={quantity.product}
-                                            onClick={e=>this.changeQuantity(e)}
+                                            onClick={e => this.changeQuantity(e)}
                                         >
                                             Modify
                                         </button>
@@ -256,7 +215,8 @@ class ShoppingCart extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        cartReducer: state.cartReducer
+        cartReducer: state.cartReducer,
+        datos: state.cartReducer.cart
     };
 };
 
@@ -279,12 +239,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
 
 /* --------------------- PENDIENTE -------------------
 
-
 -limpiar todo lo no necesario
 -eliminar ordenes
 -corregir al eliminar productos y clientes en pagina administracion: que no quede uno al final
-
-
 
 --------------------LISTO CON REDUX --------------------------
 - CONFIRMAR QUE AL REGRESAR o NAVEGAR NO SE PIERDAN LOS PRODUCTOS 
@@ -298,9 +255,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
 - al dar click en confirmar orden, limpiar arreglo u objeto
 - VALIDAR AL PEDIR MAS PRODUCTOS DEL STOCK, MOSTRAR MENSAJE
 -SI SE COMPRA EL MISMO PRODUCTO, no agregarlo  
--poder modificar la cantidad desde el cart
+
 
 
 -quitar lista de roots
 
+-agregar apginacion en products
+-agregar apginacion en eliminar productos
+-agregar paginacion en actualizar productos
+-corregir cambiar cantidad
 */

@@ -47,7 +47,13 @@ class ClientDelete extends Component {
             <div>
                 <div className="alert alert-danger" role="alert">
                     {/* <!-- Button trigger modal -->*/}
-                    <button type="button" onClick={this.openModal} className="btn btn-outline-danger" data-toggle="modal" data-target="#deleteClientModal">
+                    <button 
+                        type="button" 
+                        onClick={this.openModal} 
+                        className="btn btn-outline-danger" 
+                        data-toggle="modal" 
+                        data-target="#deleteClientModal"
+                    >
                         <i className="fas fa-trash-alt"></i> Delete a Client
                     </button>
 
@@ -75,7 +81,9 @@ class ClientDelete extends Component {
                                                             Last Names: {client.lastnamefa} {client.lastnamemo}
                                                         </div>
                                                         <div className="col-md-4 listSmall listCenter">
-                                                            <button className="btn btn-outline-danger" value={client._id} onClick={this.deleteclient}> Delete </button>
+                                                            <button className="btn btn-outline-danger" value={client._id} onClick={this.deleteclient}> 
+                                                                <i className="fas fa-trash-alt"></i> Delete 
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </li>

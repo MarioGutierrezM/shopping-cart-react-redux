@@ -17,13 +17,14 @@ class Products extends Component {
         this.state = {
             data: [],
             newOrder: [],
-            quantity: 0
+            quantity: 0,
+            pagination: 0
         }
     }
 
     componentDidMount() {
         let API_URL = 'https://shopping-cart-api.herokuapp.com'
-        const url = `${API_URL}/api/product` || 'http://localhost:3000/api/product';
+        const url = `${API_URL}/api/product?category=&name=&page=${this.state.pagination}&items=6` || 'http://localhost:3000/api/product';
         productController.getAllProducts(url, res => {
             this.setState({
                 data: res.body
@@ -31,26 +32,54 @@ class Products extends Component {
         });
     }
 
-    addToCart(e) {
+    async addToCart(e) {
         console.log("Id added", e.target.value);
-        if(this.state.quantity === 0){
-            this.props.addOneProduct({
-                product: e.target.value,
-                quantity: 1
-            });
-        }else{
-            this.props.addOneProduct({
-                product: e.target.value,
-                quantity: this.state.quantity
-            });
-        }
-        
+        await this.props.addOneProduct({
+            product: e.target.value,
+            quantity: (this.state.quantity > 0) ? this.state.quantity : 1
+        });
     }
 
     handleNumber(e) {
         this.setState({
             quantity: Number(e.target.value)
         })
+    }
+
+    async handlePaginationPrev(e) {
+        if (this.state.pagination === 0) {
+            let API_URL = 'https://shopping-cart-api.herokuapp.com'
+            let url = `${API_URL}/api/product?category=&name=&page=${this.state.pagination}&items=6` || 'http://localhost:3000/api/product';
+            productController.getAllProducts(url, res => {
+                this.setState({
+                    data: res.body
+                });
+            });
+        } else {
+            await this.setState({
+                pagination: this.state.pagination - 1
+            });
+            let API_URL = 'https://shopping-cart-api.herokuapp.com'
+            let url = `${API_URL}/api/product?category=&name=&page=${this.state.pagination}&items=6` || 'http://localhost:3000/api/product';
+            productController.getAllProducts(url, res => {
+                this.setState({
+                    data: res.body
+                });
+            });
+        }
+    }
+
+    async handlePaginationNext(e) {
+        await this.setState({
+            pagination: this.state.pagination + 1
+        });
+        let API_URL = 'https://shopping-cart-api.herokuapp.com'
+        let url = `${API_URL}/api/product?category=&name=&page=${this.state.pagination}&items=6` || 'http://localhost:3000/api/product';
+        productController.getAllProducts(url, res => {
+            this.setState({
+                data: res.body
+            });
+        });
     }
 
     render() {
@@ -79,21 +108,21 @@ class Products extends Component {
                                     </Link>
                                     <div className="row btnAndCount">
                                         <div className="col-md-3 btnAndCount">
-                                            <input className="form-control border-green" 
-                                                type="number" 
-                                                max="10" 
+                                            <input className="form-control border-green"
+                                                type="number"
+                                                max="10"
                                                 min="1"
-                                                onChange={e => this.handleNumber(e)} 
+                                                onChange={e => this.handleNumber(e)}
                                             />
                                         </div>
                                         <div className="col-md-9 btnAndCount">
-                                            <button 
-                                                type="button" 
-                                                onClick={e => this.addToCart(e)} 
-                                                value={item._id} 
+                                            <button
+                                                type="button"
+                                                onClick={e => this.addToCart(e)}
+                                                value={item._id}
                                                 className="btn btn-secondary btn-outline-success btn-block"
                                             >
-                                            <i className="fas fa-cart-plus"></i> Add
+                                                <i className="fas fa-cart-plus"></i> Add
                                             </button>
                                         </div>
                                     </div>
@@ -101,6 +130,15 @@ class Products extends Component {
                             </div>
                         );
                     })}
+                </div>
+                <div>
+                    <nav aria-label="Page navigation example">
+                        <ul className="pagination pag-center">
+                            <li className="page-item"><a className="page-link" onClick={e => this.handlePaginationPrev(e)}>Previous</a></li>
+                            <li className="page-item disabled"><a className="page-link" >{this.state.pagination + 1}</a></li>
+                            <li className="page-item"><a className="page-link" onClick={e => this.handlePaginationNext(e)}>Next</a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         );
