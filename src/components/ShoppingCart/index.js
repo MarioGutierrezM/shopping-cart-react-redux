@@ -239,7 +239,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
 
 /* --------------------- PENDIENTE -------------------
 
--limpiar todo lo no necesario
+-limpiar todo lo no necesario-Refactor
 -eliminar ordenes
 -corregir al eliminar productos y clientes en pagina administracion: que no quede uno al final
 
@@ -250,13 +250,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
 -MOSTRAR CANTIDAD DE PRODUCTOS
 -mandar 1 producto minimo
 
-
 -armar la orden
 - al dar click en confirmar orden, limpiar arreglo u objeto
 - VALIDAR AL PEDIR MAS PRODUCTOS DEL STOCK, MOSTRAR MENSAJE
 -SI SE COMPRA EL MISMO PRODUCTO, no agregarlo  
-
-
 
 -quitar lista de roots
 

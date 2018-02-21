@@ -23,7 +23,6 @@ class ProductCreate extends Component {
             show5: false,
             show6: false
         }
-
         //con bind se optiene todo el objeto this de la clase
         this.postProduct = this.postProduct.bind(this);
         this.clearProduct = this.clearProduct.bind(this);
@@ -134,7 +133,6 @@ class ProductCreate extends Component {
                                         </button>
                                     </div>
                                     <div className="modal-body">
-
                                         <form>
                                             <div className="form-group">
                                                 <label htmlFor="name">Product Name</label>
@@ -149,137 +147,76 @@ class ProductCreate extends Component {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="description">Product Description </label>
-                                                {
-                                                    this.state.show1
-                                                        ? <textarea
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="description"
-                                                            value={this.state.description}
-                                                            onChange={e => this.handleDescriptionInputChanged(e)}
-                                                            placeholder="Enter a description"
-                                                        />
-                                                        : <textarea
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="description"
-                                                            value={this.state.description}
-                                                            onChange={e => this.handleDescriptionInputChanged(e)}
-                                                            placeholder="Enter a description"
-                                                            disabled
-                                                        />
-                                                }
+                                                {<textarea
+                                                    type="text"
+                                                    className="form-control input-green"
+                                                    id="description"
+                                                    value={this.state.description}
+                                                    onChange={e => this.handleDescriptionInputChanged(e)}
+                                                    placeholder="Enter a description"
+                                                    disabled={!this.state.show1}
+                                                />}
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="category">Product Category</label>
-                                                {
-                                                    this.state.show2
-                                                        ? <input
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="category"
-                                                            value={this.state.category}
-                                                            onChange={e => this.handleCategoryInputChanged(e)}
-                                                            placeholder="Enter a category"
-                                                        />
-                                                        : <input
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="category"
-                                                            value={this.state.category}
-                                                            onChange={e => this.handleCategoryInputChanged(e)}
-                                                            placeholder="Enter a category"
-                                                            disabled
-                                                        />
-                                                }
+                                                {<input
+                                                    type="text"
+                                                    className="form-control input-green"
+                                                    id="category"
+                                                    value={this.state.category}
+                                                    onChange={e => this.handleCategoryInputChanged(e)}
+                                                    placeholder="Enter a category"
+                                                    disabled={!this.state.show2}
+                                                />}
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="stock">Product Stock</label>
-                                                {
-                                                    this.state.show3
-                                                        ? <input
-                                                            type="number"
-                                                            className="form-control input-green"
-                                                            id="stock"
-                                                            value={this.state.stock}
-                                                            onChange={e => this.handleStockInputChanged(e)}
-                                                            placeholder="Enter the stock"
-                                                        />
-                                                        : <input
-                                                            type="number"
-                                                            className="form-control input-green"
-                                                            id="stock"
-                                                            value={this.state.stock}
-                                                            onChange={e => this.handleStockInputChanged(e)}
-                                                            placeholder="Enter the stock"
-                                                            disabled
-                                                        />
-                                                }
+                                                {<input
+                                                    type="number"
+                                                    className="form-control input-green"
+                                                    id="stock"
+                                                    value={this.state.stock}
+                                                    onChange={e => this.handleStockInputChanged(e)}
+                                                    placeholder="Enter the stock"
+                                                    disabled={!this.state.show3}
+                                                />}
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="price">Product Price</label>
-                                                {
-                                                    this.state.show4
-                                                        ? <input
-                                                            type="number"
-                                                            className="form-control input-green"
-                                                            id="price"
-                                                            value={this.state.price}
-                                                            onChange={e => this.handlePriceInputChanged(e)}
-                                                            placeholder="Enter a price"
-                                                        />
-                                                        : <input
-                                                            type="number"
-                                                            className="form-control input-green"
-                                                            id="price"
-                                                            value={this.state.price}
-                                                            onChange={e => this.handlePriceInputChanged(e)}
-                                                            placeholder="Enter a price"
-                                                            disabled
-                                                        />
-                                                }
+                                                {<input
+                                                    type="number"
+                                                    className="form-control input-green"
+                                                    id="price"
+                                                    value={this.state.price}
+                                                    onChange={e => this.handlePriceInputChanged(e)}
+                                                    placeholder="Enter a price"
+                                                    disabled={!this.state.show4}
+                                                />}
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="urlImage">Product Image</label>
-                                                {
-                                                    this.state.show5
-                                                        ? <input
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="urlImage"
-                                                            value={this.state.imageUrl}
-                                                            onChange={e => this.handleImageUrlInputChanged(e)}
-                                                            placeholder="Enter a url"
-                                                        />
-                                                        : <input
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="urlImage"
-                                                            value={this.state.imageUrl}
-                                                            onChange={e => this.handleImageUrlInputChanged(e)}
-                                                            placeholder="Enter a url"
-                                                            disabled
-                                                        />
-                                                }
+                                                {<input
+                                                    type="text"
+                                                    className="form-control input-green"
+                                                    id="urlImage"
+                                                    value={this.state.imageUrl}
+                                                    onChange={e => this.handleImageUrlInputChanged(e)}
+                                                    placeholder="Enter a url"
+                                                    disabled={!this.state.show5}
+                                                />}
                                             </div>
                                             * All fields are required
                                         </form>
-
                                     </div>
                                     <div className="modal-footer modal-color-success">
                                         <button type="button" onClick={this.clearProduct} className="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                                        {
-                                            this.state.show1 && this.state.show2 && this.state.show3 && this.state.show4 && this.state.show5 && this.state.show6
-                                                ? <button
-                                                    onClick={this.postProduct}
-                                                    id="newProductMade"
-                                                    className="btn btn-outline-success" >Save</button>
-                                                : <button
-                                                    onClick={this.postProduct}
-                                                    id="newproductMade"
-                                                    className="btn btn-outline-success"
-                                                    disabled> Save</button>
-                                        }
+                                        {<button
+                                            onClick={this.postProduct}
+                                            id="newproductMade"
+                                            className="btn btn-outline-success"
+                                            disabled={!this.state.show1 && !this.state.show2 && !this.state.show3 && !this.state.show4 && !this.state.show5 && !this.state.show6}>
+                                            Save
+                                        </button>}
                                     </div>
                                 </div>
                             </div>

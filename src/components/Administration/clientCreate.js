@@ -8,7 +8,6 @@ class ClientCreate extends Component {
 
     constructor() {
         super();
-
         this.state = {
             name: "",
             lastnamefa: "",
@@ -21,7 +20,6 @@ class ClientCreate extends Component {
             show4: false,
             show5: false
         }
-
         //con bind se optiene todo el objeto this de la clase
         this.postClient = this.postClient.bind(this);
         this.clearClient = this.clearClient.bind(this);
@@ -123,7 +121,6 @@ class ClientCreate extends Component {
                                         </button>
                                     </div>
                                     <div className="modal-body">
-
                                         <form>
                                             <div className="form-group">
                                                 <label htmlFor="nameC">First Name</label>
@@ -138,119 +135,67 @@ class ClientCreate extends Component {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="lastnameFC">Father's Last Name </label>
-                                                {
-                                                    this.state.show1
-                                                        ? <input
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="lastnameFC"
-                                                            value={this.state.lastnamefa}
-                                                            onChange={e => this.handleLast1InputChanged(e)}
-                                                            placeholder="Enter a father's lastname"
-                                                        />
-                                                        : <input
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="lastnameFC"
-                                                            value={this.state.lastnamefa}
-                                                            onChange={e => this.handleLast1InputChanged(e)}
-                                                            placeholder="Enter a father's lastname"
-                                                            disabled
-                                                        />
-                                                }
+                                                {<input
+                                                    type="text"
+                                                    className="form-control input-green"
+                                                    id="lastnameFC"
+                                                    value={this.state.lastnamefa}
+                                                    onChange={e => this.handleLast1InputChanged(e)}
+                                                    placeholder="Enter a father's lastname"
+                                                    disabled={!this.state.show1}
+                                                />}
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="lastnameMC">Mother's Last Name</label>
-                                                {
-                                                    this.state.show2
-                                                        ? <input
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="lastnameMC"
-                                                            value={this.state.lastnamemo}
-                                                            onChange={e => this.handleLast2InputChanged(e)}
-                                                            placeholder="Enter mother's last name"
-                                                        />
-                                                        : <input
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="lastnameMC"
-                                                            value={this.state.lastnamemo}
-                                                            onChange={e => this.handleLast2InputChanged(e)}
-                                                            placeholder="Enter mother's last name"
-                                                            disabled
-                                                        />
-                                                }
+                                                {<input
+                                                    type="text"
+                                                    className="form-control input-green"
+                                                    id="lastnameMC"
+                                                    value={this.state.lastnamemo}
+                                                    onChange={e => this.handleLast2InputChanged(e)}
+                                                    placeholder="Enter mother's last name"
+                                                    disabled={!this.state.show2}
+                                                />}
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="birthdateC">Birthdate</label>
-                                                {
-                                                    this.state.show3
-                                                        ? <input
-                                                            type="Date"
-                                                            max="1999-12-31"
-                                                            className="form-control input-green"
-                                                            id="birthdateC"
-                                                            value={this.state.birthdate}
-                                                            onChange={e => this.handleBirthInputChanged(e)}
-                                                            placeholder="Enter  YYYY-MM-DD"
-                                                        />
-                                                        : <input
-                                                            type="Date"
-                                                            max="1999-12-31"
-                                                            className="form-control input-green"
-                                                            id="birthdateC"
-                                                            value={this.state.birthdate}
-                                                            onChange={e => this.handleBirthInputChanged(e)}
-                                                            placeholder="Enter  YYYY-MM-DD"
-                                                            disabled
-                                                        />
-                                                }
+                                                {<input
+                                                    type="Date"
+                                                    max="1999-12-31"
+                                                    className="form-control input-green"
+                                                    id="birthdateC"
+                                                    value={this.state.birthdate}
+                                                    onChange={e => this.handleBirthInputChanged(e)}
+                                                    placeholder="Enter  YYYY-MM-DD"
+                                                    disabled={!this.state.show3}
+                                                />}
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="addressC">Address</label>
-                                                {
-                                                    this.state.show4
-                                                        ? <input
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="addressC"
-                                                            value={this.state.address}
-                                                            onChange={e => this.handleAddressInputChanged(e)}
-                                                            placeholder="Enter an address"
-                                                        />
-                                                        : <input
-                                                            type="text"
-                                                            className="form-control input-green"
-                                                            id="addressC"
-                                                            value={this.state.address}
-                                                            onChange={e => this.handleAddressInputChanged(e)}
-                                                            placeholder="Enter an address"
-                                                            disabled
-                                                        />
-                                                }
+                                                {<input
+                                                    type="text"
+                                                    className="form-control input-green"
+                                                    id="addressC"
+                                                    value={this.state.address}
+                                                    onChange={e => this.handleAddressInputChanged(e)}
+                                                    placeholder="Enter an address"
+                                                    disabled={!this.state.show4}
+                                                />}
                                             </div>
                                             * All fields are required
                                         </form>
-
                                     </div>
                                     <div className="modal-footer modal-color-success">
                                         <button type="button" onClick={this.clearClient} className="btn btn-outline-secondary" data-dismiss="modal">
                                             Close
                                         </button>
-                                        {
-                                            this.state.show1 && this.state.show2 && this.state.show3 && this.state.show4 && this.state.show5
-                                                ? <button
-                                                    onClick={this.postClient}
-                                                    id="newClientMade"
-                                                    className="btn btn-outline-success">Save</button>
-
-                                                : <button
-                                                    onClick={this.postClient}
-                                                    id="newClientMade"
-                                                    className="btn btn-outline-success"
-                                                    disabled>Save</button>
-                                        }
+                                        {<button
+                                            onClick={this.postClient}
+                                            id="newClientMade"
+                                            className="btn btn-outline-success"
+                                            disabled={!this.state.show1 && !this.state.show2 && !this.state.show3 && !this.state.show4 && !this.state.show5}>
+                                            Save
+                                        </button>}
                                     </div>
                                 </div>
                             </div>
